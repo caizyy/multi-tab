@@ -7,7 +7,7 @@ Install the dependencies by running npm install in the project directory.<br>
 Usage
 To start the program, run the following command:<br>
 
-`node list.js`<br>
+```node multitab.js```<br>
 Once the program is running, you can use the following commands:
 
 help: Displays a list of available commands<br>
