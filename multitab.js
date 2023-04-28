@@ -4,11 +4,12 @@ const readline = require("readline")
 
 var data = {};
 try{
-    const fileData = fs.readFileSync("./data.json");
+    const fileData = fs.readFileSync("./mtab-data.json");
     data = JSON.parse(fileData);
 } catch (error){
     console.log("failed to load data from file...\n",error.message, " \nassuming file doesnt exist and attempting to create file");
-    fs.writeFileSync("./data.json", JSON.stringify(data))
+    fs.writeFileSync("./mtab-data.json", JSON.stringify(data))
+    console.log("created file!")
 }
 
 
@@ -43,14 +44,13 @@ const removeurl = (list,query)=>{
 //handle commands
 const commands = {
     "help": ()=>{
-        return `
-        Available commands:
-        - help: display this help message
-        - makelist <name>: create a new empty list with the given name
-        - addurl <list> <url>: add the given URL to the specified list
-        - removeurl <list> <url>: remove the given URL from the specified list
-        - list <list>: display the URLs in the specified list
-        - launch <list>: launch all the URLs in the specified list in Microsoft Edge`
+        return `        Available commands:
+    - help: display this help message
+    - makelist <name>: create a new empty list with the given name
+    - addurl <list> <url>: add the given URL to the specified list
+    - removeurl <list> <url>: remove the given URL from the specified list
+    - list <list>: display the URLs in the specified list
+    - launch <list>: launch all the URLs in the specified list in Microsoft Edge`
     },
     "makelist": (name)=>{
         if (!name){
@@ -86,14 +86,16 @@ const commands = {
         if (!data[list]){
             return "list not found"
         }
+        var urlsopened = 0
         data[list].urls.forEach((url) => {
+            urlsopened = +1
             exec(`start microsoft-edge:${url}`, (error)=>{
                 if (error){
                     console.log(`failed to launch ${url}: ${error.message}`)
                 }
             })
         });
-        return "launching list in microsoft edge..."
+        return `launched ${urlsopened} tabs`
     }
 }
 if (!process.argv[2]){
@@ -107,12 +109,19 @@ if (!process.argv[2]){
         var args = thing.split(" ")
         var command = args[0]
         args.splice(0,1)
+        if (command == ""){
+            interface.prompt()
+            return
+        }
         if (commands[command]){
             console.log(commands[command](args[0], args[1]))
-        }else console.log("command not found :(")
+        }else console.log(`${command}: unknown command`)
         interface.prompt()
     })
     interface.prompt()
+    interface.on("close", ()=>{
+        fs.writeFileSync("./mtab-data.json", JSON.stringify(data))
+    })
 }else console.log(commands[process.argv[2]](process.argv[3], process.argv[4]))
 
-fs.writeFileSync("./data.json", JSON.stringify(data))
+fs.writeFileSync("./mtab-data.json", JSON.stringify(data))
