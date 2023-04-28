@@ -18,5 +18,6 @@ list <list>: Displays the URLs in the specified list<br>
 launch <list>: Launches all the URLs in the specified list in Microsoft Edge<br>
 To exit the program, use Ctrl + C.<br>
 
-#Requirements<br>
+or if you are feeling fancy you can just add the command as a arguement after the node multitab.js
+Requirements<br>
 This script requires Node.js version 16 or higher to run.
