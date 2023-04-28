@@ -1,5 +1,6 @@
 # multi-tab
-This is a simple cli that allows you to create and manage lists of URLs. You can use it to keep track of your favorite websites, or to organize URLs for a particular project or topic.
+This is a simple cli that allows you to create and manage lists of URLs.<br>
+You could use it to keep track of your favorite websites, or to organize URLs for a particular project or topic.
 #Installation
 Clone the repository or download the code.<br>
 Install the dependencies by running npm install in the project directory.<br>
